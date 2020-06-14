@@ -1,28 +1,28 @@
 
-<div class="sticky" style="display: flex; flex-wrap: wrap;">
+<div style="display: flex; flex-wrap: wrap;">
   <h1 style="flex: 2;margin: 10px;">Telephone Directory</h1>
   <input type='text' class="row" style="flex: 1; margin: 10px;" placeholder="Search" [(ngModel)]="search"
     (input)="doSearch()">
 </div>
+
 <div style="display: flex; flex-wrap: wrap;">
-
+<!-- Tabular form data representation for Person details -->
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="flex: 2; margin: 10px;">
-
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 120px;"> Name </th>
       <td mat-cell *matCellDef="let element"> <span (click)="showPersonDetails(element)"
           style="cursor: pointer;">{{element.name}}</span> </td>
     </ng-container>
-
     <ng-container matColumnDef="phoneNumber">
       <th mat-header-cell *matHeaderCellDef style="width: 120px;"> Phone Number </th>
       <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
     </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="cursor: pointer;"
     [ngClass]="{'highlight': selectedRowIndex == row.id}"(click)="showPersonDetails(row); "></tr>
   </table>
+
+  <!-- Complete data representation for person -->
   <div *ngIf="personDetails && !isClosed" style="flex:1; margin: 10px;">
     <app-person [personDetails]="personDetails" (isClosed)=doClose()>
     </app-person>

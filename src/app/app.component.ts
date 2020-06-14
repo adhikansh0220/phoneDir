@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { PersonDetails } from './person-details';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataSource } from '@angular/cdk/table';
 import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 @Component({
@@ -24,7 +23,6 @@ export class AppComponent {
   private subscription: Subscription;
   selectedRowIndex: number = -1;
   constructor(private router: Router) {
-
     this.subscription = router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         if (!router.navigated) {
@@ -46,6 +44,9 @@ export class AppComponent {
     this.dataSource.sort = this.sort;
   }
 
+  /**
+   * Do search
+   */
   public doSearch() {
 
     this.personDetailsList = this.personDetailsListCopy.filter((personDetails) => {
@@ -55,6 +56,10 @@ export class AppComponent {
     this.dataSource.sort = this.sort;
   }
 
+  /**
+   * Shows person details
+   * @param personDetails 
+   */
   public showPersonDetails(personDetails: PersonDetails) {
     this.selectedRowIndex = personDetails.id;
     if (localStorage.getItem(personDetails.id.toString()) && localStorage.getItem(personDetails.id.toString()) !== null) {
@@ -66,8 +71,15 @@ export class AppComponent {
     this.isClosed = false;
   }
 
+  /**
+   * Do close
+   */
   public doClose() {
     this.isClosed = true;
   }
-  
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+
 }
