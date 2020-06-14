@@ -22,16 +22,17 @@ export class AppComponent {
   public personDetails: PersonDetails;
   public isClosed = false;
   private subscription: Subscription;
+  selectedRowIndex: number = -1;
   constructor(private router: Router) {
 
     this.subscription = router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        if(!router.navigated){
+        if (!router.navigated) {
           localStorage.clear();
         }
       }
     });
-   }
+  }
 
 
   ngOnInit(): void {
@@ -55,6 +56,7 @@ export class AppComponent {
   }
 
   public showPersonDetails(personDetails: PersonDetails) {
+    this.selectedRowIndex = personDetails.id;
     if (localStorage.getItem(personDetails.id.toString()) && localStorage.getItem(personDetails.id.toString()) !== null) {
       this.personDetails = JSON.parse(localStorage.getItem(personDetails.id.toString()));
     } else {
@@ -67,4 +69,5 @@ export class AppComponent {
   public doClose() {
     this.isClosed = true;
   }
+  
 }
