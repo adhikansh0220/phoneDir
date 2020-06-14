@@ -3,6 +3,8 @@ import { PersonDetails } from './person-details';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/table';
+import { Router, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,7 +21,17 @@ export class AppComponent {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   public personDetails: PersonDetails;
   public isClosed = false;
-  constructor() { }
+  private subscription: Subscription;
+  constructor(private router: Router) {
+
+    this.subscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if(!router.navigated){
+          localStorage.clear();
+        }
+      }
+    });
+   }
 
 
   ngOnInit(): void {
