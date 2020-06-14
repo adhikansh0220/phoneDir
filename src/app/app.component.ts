@@ -36,11 +36,12 @@ export class AppComponent {
   public doSearch() {
 
     this.personDetailsList = this.personDetailsListCopy.filter((personDetails) => {
-      return personDetails.name.includes(this.search.toString()) || personDetails.phoneNumber.toString().includes(this.search.toString());
+      return personDetails.name.toLowerCase().includes(this.search.toString().toLowerCase()) || personDetails.phoneNumber.toString().includes(this.search.toString());
     });
     this.dataSource = new MatTableDataSource(this.personDetailsList);
     this.dataSource.sort = this.sort;
   }
+
   public showPersonDetails(personDetails: PersonDetails) {
     if (localStorage.getItem(personDetails.id.toString()) && localStorage.getItem(personDetails.id.toString()) !== null) {
       this.personDetails = JSON.parse(localStorage.getItem(personDetails.id.toString()));
